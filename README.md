@@ -3,11 +3,30 @@
 A graph-based flight network analyzer built in Java. Given a dataset of real-world airports and routes, the application constructs a weighted directed graph and lets you query it through a **JavaFX graphical interface** — finding cheapest routes, fastest routes, reachable airports, critical hubs, minimum spanning trees, and more.
 
 ---
+---
+
+## Project Description
+
+Every airline booking engine needs to answer questions like: what is the cheapest way to get from city A to city B, possibly with layovers? What airports are reachable from a given hub? Which routes are structurally most critical?
+
+This project builds a **flight network analyzer** using real-world-inspired data and applies multiple graph algorithms to answer these questions. The network is modelled as a **weighted directed graph** using adjacency lists, where each airport is a vertex and each route is a directed edge carrying two independent weights — cost (USD) and duration (minutes).
+
+Since the raw routes dataset contains no cost or duration data, both weights are **computed on-the-fly** at load time using:
+
+- **Haversine formula** → great-circle distance between two lat/lon coordinates
+- **Tiered per-km pricing model** → estimated one-way economy fare in USD
+- **Cruising speed model** → estimated door-to-door duration in minutes
+
+The result is a fully-weighted graph ready for shortest-path, reachability, structural, and spanning-tree queries — all accessible through an interactive JavaFX GUI.
+
+---
 
 ## 📋 Table of Contents
 
-- [Overview](#overview)
+- [Project Description](#project-description)
+- [Requirements Checklist](#requirements-checklist)
 - [Features](#features)
+- [Interface Preview](#interface-preview)
 - [Project Structure](#project-structure)
 - [Data Model](#data-model)
 - [Algorithms](#algorithms)
@@ -17,17 +36,29 @@ A graph-based flight network analyzer built in Java. Given a dataset of real-wor
 - [Complexity Analysis](#complexity-analysis)
 - [Technologies](#technologies)
 
----
 
-## Overview
 
-The Flight Connection Optimizer loads two CSV files — `airports.csv` and `routes.csv` — and builds an in-memory weighted directed graph. Since the routes CSV contains no cost or duration data, both weights are **computed on-the-fly** using:
+## Requirements Checklist
 
-- **Haversine formula** → great-circle distance between two lat/lon coordinates
-- **Tiered per-km pricing model** → estimated one-way fare in USD
-- **Cruising speed model** → estimated door-to-door duration in minutes
+### ✅ Core Requirements (All Met)
 
-The result is a fully-weighted graph ready for shortest-path, reachability, and structural queries.
+| Requirement | Status | Implementation |
+|-------------|--------|----------------|
+| Load a flight dataset from CSV — at least 30 airports and 80 routes with cost and duration as edge weights | ✅ Done | `CSVLoader.java` + `RouteEnricher.java` — weights computed from coordinates via Haversine |
+| Represent the network as a weighted directed graph using adjacency lists | ✅ Done | `Graph.java` — `HashMap<String, List<Edge>>` adjacency list |
+| Dijkstra's algorithm — cheapest route (cost weight) | ✅ Done | `Dijkstra.cheapest()` in `Dijkstra.java` |
+| Dijkstra's algorithm — fastest route (duration weight) | ✅ Done | `Dijkstra.fastest()` in `Dijkstra.java` |
+| BFS — all airports reachable within at most K connections | ✅ Done | `BFSReachable.within()` in `BFSReachable.java` |
+| Detect airports that, if removed, would disconnect the graph (articulation points) | ✅ Done | `ArticulationPoints.find()` — Tarjan's DFS algorithm |
+| Handle edge cases: no route exists, source equals destination, airport not in dataset | ✅ Done | Validated in `Dijkstra.java`, `BFSReachable.java`, and GUI input layer |
+| Complexity analysis for all graph operations | ✅ Done | Documented in Javadoc on every class and in this README |
+
+### 🌟 Bonus Requirements (All Met)
+
+| Bonus Feature | Status | Implementation |
+|---------------|--------|----------------|
+| Kruskal's algorithm — Minimum Spanning Tree visualised as a list of essential routes | ✅ Done | `MSTKruskal.java` — Kruskal + Union-Find with path compression and union by rank |
+| Travel budget mode — all destinations reachable within a given cost budget | ✅ Done | `Dijkstra.withinBudget()` — modified Dijkstra pruned at budget threshold |
 
 ---
 
@@ -46,34 +77,47 @@ The result is a fully-weighted graph ready for shortest-path, reachability, and 
 
 ---
 
+## Interface Preview
+
+<!-- Add your screenshot(s) here. Replace the placeholder below with your actual image file. -->
+<!-- To add a screenshot: take a screenshot of the running app, save it as screenshot.png in the repo root, then the line below will display it automatically. -->
+
+![Flight Connection Optimizer GUI](screenshot.png)
+
+<!-- To add more screenshots, duplicate the line above with different filenames, e.g.: -->
+<!-- ![Cheapest Route Tab](screenshots/cheapest.png) -->
+<!-- ![BFS Reachable Tab](screenshots/bfs.png) -->
+
+---
+
 ## Project Structure
 
 ```
-FlightConnectionOptimizer_DB/
+FlightConnectionOptimizer_DS/
 │
 ├── src/
-│   ├── main/java/org/example/
-│   │   ├── Main.java                  # JavaFX bootstrap launcher
-│   │   ├── MainApp.java               # Full GUI (all 8 tabs)
-│   │   ├── MainCLI.java               # Original CLI (kept as backup)
+│   ├── main/java/org.example/
+│   │   ├── Main.java                   # JavaFX bootstrap launcher
+│   │   ├── MainApp.java                # Full GUI (all 8 tabs)
+│   │   ├── MainCLI.java                # Original CLI (kept as backup)
 │   │   │
 │   │   ├── model/
-│   │   │   ├── Airport.java           # Vertex: IATA, city, country, lat/lon
-│   │   │   └── FlightRoute.java       # Legacy route model
+│   │   │   ├── Airport.java            # Vertex: IATA, city, country, lat/lon
+│   │   │   └── FlightRoute.java        # Legacy route model
 │   │   │
 │   │   ├── graph/
-│   │   │   ├── Graph.java             # Adjacency-list weighted directed graph
-│   │   │   └── Edge.java              # Directed edge: destination, cost, duration
+│   │   │   ├── Graph.java              # Adjacency-list weighted directed graph
+│   │   │   └── Edge.java               # Directed edge: destination, cost, duration
 │   │   │
 │   │   ├── algorithms/
-│   │   │   ├── Dijkstra.java          # Cheapest/fastest route + budget mode
-│   │   │   ├── BFSReachable.java      # Reachability within K hops
-│   │   │   ├── ArticulationPoints.java# Critical airport detection (Tarjan DFS)
-│   │   │   └── MSTKruskal.java        # Minimum Spanning Tree (Kruskal + DSU)
+│   │   │   ├── Dijkstra.java           # Cheapest/fastest route + budget mode
+│   │   │   ├── BFSReachable.java       # Reachability within K hops
+│   │   │   ├── ArticulationPoints.java # Critical airport detection (Tarjan DFS)
+│   │   │   └── MSTKruskal.java         # Minimum Spanning Tree (Kruskal + DSU)
 │   │   │
 │   │   └── utils/
-│   │       ├── CSVLoader.java         # Parses airports.csv + routes.csv → Graph
-│   │       └── RouteEnricher.java     # Haversine distance → cost + duration
+│   │       ├── CSVLoader.java          # Parses airports.csv + routes.csv → Graph
+│   │       └── RouteEnricher.java      # Haversine distance → cost + duration
 │   │
 │   └── test/java/org/example/
 │       ├── GraphTest.java
@@ -81,8 +125,8 @@ FlightConnectionOptimizer_DB/
 │       └── BFSReachableTest.java
 │
 ├── data/
-│   ├── airports.csv                   # 30+ airports: IATA, city, country, lat, lon
-│   └── routes.csv                     # 80+ routes: source IATA, destination IATA
+│   ├── airports.csv                    # 30+ airports: IATA, city, country, lat, lon
+│   └── routes.csv                      # 80+ routes: source IATA, destination IATA
 │
 ├── pom.xml
 └── README.md
@@ -92,6 +136,10 @@ FlightConnectionOptimizer_DB/
 
 ## Data Model
 
+### `Real-World DatasetSource URL` 
+```
+https://www.kaggle.com/datasets/elmoallistair/airlines-airport-and-routes?resource=download
+```
 ### `airports.csv`
 ```
 IATA,City,Country,Latitude,Longitude
@@ -142,7 +190,7 @@ Time:  O(V + E)
 Space: O(V + E)
 ```
 
-### Kruskal's MST — Network Backbone
+### Kruskal's MST — Network Backbone ⭐ Bonus
 Collects all undirected edges (deduplicating by keeping the cheaper direction), sorts by cost, then greedily picks edges that connect different components using **Union-Find with path compression and union by rank**.
 
 ```
@@ -150,7 +198,7 @@ Time:  O(E log E)
 Space: O(V + E)
 ```
 
-### Budget Mode — Modified Dijkstra
+### Budget Mode — Modified Dijkstra ⭐ Bonus
 Full Dijkstra from the source that prunes any vertex whose accumulated cost exceeds the user-specified budget. Returns all reachable airports mapped to their minimum cost.
 
 ```
@@ -179,7 +227,7 @@ cd FlightConnectionOptimizer_DB
 
 Make sure your CSV files are at:
 ```
-FlightConnectionOptimizer_DB/
+FlightConnectionOptimizer_DS/
 └── data/
     ├── airports.csv
     └── routes.csv
@@ -191,7 +239,7 @@ The `data/` folder must be at the **project root** (same level as `src/` and `po
 
 ## Running the Application
 
-### Option A — IntelliJ IDEA
+### Option A — IntelliJ IDEA (Recommended)
 
 1. Open the project in IntelliJ IDEA
 2. Right-click `pom.xml` → **Maven → Sync Project**
