@@ -136,10 +136,10 @@ FlightConnectionOptimizer_DS/
 
 ## Data Model
 
-### `Real-World DatasetSource URL` 
-```
-https://www.kaggle.com/datasets/elmoallistair/airlines-airport-and-routes?resource=download
-```
+### `Real-World Dataset Source URL link` 
+
+[https://www.kaggle.com/datasets/elmoallistair/airlines-airport-and-routes?resource=download](https://www.kaggle.com/datasets/elmoallistair/airlines-airport-and-routes?resource=download)
+
 ### `airports.csv`
 ```
 IATA,City,Country,Latitude,Longitude
