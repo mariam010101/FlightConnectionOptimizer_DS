@@ -3,7 +3,7 @@
 A graph-based flight network analyzer built in Java. Given a dataset of real-world airports and routes, the application constructs a weighted directed graph and lets you query it through a **JavaFX graphical interface** — finding cheapest routes, fastest routes, reachable airports, critical hubs, minimum spanning trees, and more.
 
 ---
-###Created by Mariam Ghevondyan and Maria Danielyan 
+**Created by Mariam Ghevondyan and Maria Danielyan** 
 ---
 
 ## Project Description
