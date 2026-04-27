@@ -97,32 +97,36 @@ FlightConnectionOptimizer_DS/
 │
 ├── src/
 │   ├── main/java/org.example/
-│   │   ├── Main.java                   # JavaFX bootstrap launcher
-│   │   ├── MainApp.java                # Full GUI (all 8 tabs)
-│   │   ├── MainCLI.java                # Original CLI (kept as backup)
-│   │   │
-│   │   ├── model/
-│   │   │   ├── Airport.java            # Vertex: IATA, city, country, lat/lon
-│   │   │   └── FlightRoute.java        # Legacy route model
-│   │   │
-│   │   ├── graph/
-│   │   │   ├── Graph.java              # Adjacency-list weighted directed graph
-│   │   │   └── Edge.java               # Directed edge: destination, cost, duration
-│   │   │
-│   │   ├── algorithms/
-│   │   │   ├── Dijkstra.java           # Cheapest/fastest route + budget mode
-│   │   │   ├── BFSReachable.java       # Reachability within K hops
-│   │   │   ├── ArticulationPoints.java # Critical airport detection (Tarjan DFS)
-│   │   │   └── MSTKruskal.java         # Minimum Spanning Tree (Kruskal + DSU)
-│   │   │
-│   │   └── utils/
-│   │       ├── CSVLoader.java          # Parses airports.csv + routes.csv → Graph
-│   │       └── RouteEnricher.java      # Haversine distance → cost + duration
-│   │
-│   └── test/java/org/example/
-│       ├── GraphTest.java
-│       ├── DijkstraTest.java
-│       └── BFSReachableTest.java
+│      ├── Main.java                   # JavaFX bootstrap launcher
+│      ├── MainApp.java                # Full GUI (all 8 tabs)
+│      ├── MainCLI.java                # Original CLI (kept as backup)
+│      │
+│      ├── model/
+│      │   ├── Airport.java            # Vertex: IATA, city, country, lat/lon
+│      │   └── FlightRoute.java        # Legacy route model
+│      │
+│      ├── graph/
+│      │   ├── Graph.java              # Adjacency-list weighted directed graph
+│      │   └── Edge.java               # Directed edge: destination, cost, duration
+│      │
+│      ├── algorithms/
+│      │   ├── Dijkstra.java           # Cheapest/fastest route + budget mode
+│      │   ├── BFSReachable.java       # Reachability within K hops
+│      │   ├── ArticulationPoints.java # Critical airport detection (Tarjan DFS)
+│      │   └── MSTKruskal.java         # Minimum Spanning Tree (Kruskal + DSU)
+│      │
+│      └── utils/
+│      |   ├── CSVLoader.java          # Parses airports.csv + routes.csv → Graph
+│      |   └── RouteEnricher.java      # Haversine distance → cost + duration
+│      │  
+│      │  
+│      │  
+│      │   
+│      └── tests/
+│          ├── GraphTest.java
+│          ├── DijkstraTest.java
+│          └── BFSReachableTest.java
+│       
 │
 ├── data/
 │   ├── airports.csv                    # 30+ airports: IATA, city, country, lat, lon
