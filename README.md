@@ -49,7 +49,7 @@ The result is a fully-weighted graph ready for shortest-path, reachability, and 
 ## Project Structure
 
 ```
-FlightConnectionOptimizer/
+FlightConnectionOptimizer_DB/
 │
 ├── src/
 │   ├── main/java/org/example/
@@ -171,15 +171,15 @@ Space: O(V)
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/FlightConnectionOptimizer.git
-cd FlightConnectionOptimizer
+git clone https://github.com/mariam010101/FlightConnectionOptimizer_DB.git
+cd FlightConnectionOptimizer_DB
 ```
 
 ### Place Data Files
 
 Make sure your CSV files are at:
 ```
-FlightConnectionOptimizer/
+FlightConnectionOptimizer_DB/
 └── data/
     ├── airports.csv
     └── routes.csv
