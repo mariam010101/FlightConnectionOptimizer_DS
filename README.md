@@ -265,13 +265,10 @@ Go to **Run → Edit Configurations** and set:
 
 ---
 
-## Running Tests
+## Running Tests (three tests)
 
-```bash
-mvn test
-```
 
-Or in IntelliJ: right-click the `test/` folder → **Run All Tests**.
+Or in IntelliJ: right-click each java file in  `tests` package in org.example
 
 Test classes cover:
 - `GraphTest` — vertex/edge insertion, containment, edge counts
