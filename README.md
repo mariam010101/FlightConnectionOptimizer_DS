@@ -89,6 +89,7 @@ The result is a fully-weighted graph ready for shortest-path, reachability, stru
 <!-- To add more screenshots, duplicate the line above with different filenames, e.g.: -->
 <!-- ![Cheapest Route Tab](screenshots/cheapest.png) -->
 <!-- ![BFS Reachable Tab](screenshots/bfs.png) -->
+You can find more screenshots in images folder in this repository 
 
 ---
 
