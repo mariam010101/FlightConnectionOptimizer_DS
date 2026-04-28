@@ -84,7 +84,7 @@ The result is a fully-weighted graph ready for shortest-path, reachability, stru
 <!-- Add your screenshot(s) here. Replace the placeholder below with your actual image file. -->
 <!-- To add a screenshot: take a screenshot of the running app, save it as screenshot.png in the repo root, then the line below will display it automatically. -->
 
-![Flight Connection Optimizer GUI](Screenshot 2026-04-28 144106.png)
+![Flight Connection Optimizer GUI](images/Screenshot.png)
 
 <!-- To add more screenshots, duplicate the line above with different filenames, e.g.: -->
 <!-- ![Cheapest Route Tab](screenshots/cheapest.png) -->
